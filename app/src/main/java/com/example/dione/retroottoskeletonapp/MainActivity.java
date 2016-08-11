@@ -10,6 +10,7 @@ import com.example.dione.retroottoskeletonapp.api.models.Weather;
 import com.example.dione.retroottoskeletonapp.application.ForecastApplication;
 import com.example.dione.retroottoskeletonapp.event.GetWeatherEvent;
 import com.example.dione.retroottoskeletonapp.event.SendWeatherEvent;
+import com.example.dione.retroottoskeletonapp.event.SendWeatherEventError;
 import com.squareup.otto.Subscribe;
 
 public class MainActivity extends AppCompatActivity {
@@ -39,6 +40,12 @@ public class MainActivity extends AppCompatActivity {
         Currently currently = weather.getCurrently();
         forecastTextView.setText(currently.getSummary());
     }
+
+    @Subscribe
+    public void onSendWeatherEventError(SendWeatherEventError sendWeatherEventError) {
+        forecastTextView.setText(sendWeatherEventError.getmRetroFitError().toString());
+    }
+
 
     @Override
     public void onResume() {

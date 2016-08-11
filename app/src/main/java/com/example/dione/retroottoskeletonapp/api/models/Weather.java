@@ -11,4 +11,5 @@ public class Weather {
     public Currently getCurrently() {
         return mCurrently;
     }
+
 }
