@@ -9,7 +9,7 @@ import retrofit.RetrofitError;
 public class SendWeatherEventError {
     private RetrofitError mRetroFitError;
     public SendWeatherEventError(RetrofitError error){
-        this.mRetroFitError = error;
+        this.mRetroFitError = error; 
     }
 
     public RetrofitError getmRetroFitError() {

@@ -30,7 +30,7 @@ public class ForecastClient {
                 .setEndpoint(API_URL)
                 .setClient(new OkClient(new OkHttpClient()))
                 .setLogLevel(RestAdapter.LogLevel.FULL)
-                .build();
+                .build(); 
     }
 
     public void getWeather(String latitude, String longitude, Callback<Weather> callback) {
