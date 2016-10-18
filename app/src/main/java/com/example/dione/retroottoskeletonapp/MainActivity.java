@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Subscribe
     public void onSendWeatherEventError(SendWeatherEventError sendWeatherEventError) {
-        forecastTextView.setText(sendWeatherEventError.getmRetroFitError().toString());
+        forecastTextView.setText(sendWeatherEventError.getmRetroFitError());
     }
 
 

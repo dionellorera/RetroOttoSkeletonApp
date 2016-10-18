@@ -4,16 +4,19 @@ import android.content.Context;
 import android.util.Log;
 
 import com.example.dione.retroottoskeletonapp.api.ForecastClient;
+import com.example.dione.retroottoskeletonapp.api.interfaces.IWeather;
 import com.example.dione.retroottoskeletonapp.api.models.Weather;
 import com.example.dione.retroottoskeletonapp.event.GetWeatherEvent;
 import com.example.dione.retroottoskeletonapp.event.SendWeatherEvent;
 import com.example.dione.retroottoskeletonapp.event.SendWeatherEventError;
-import com.squareup.okhttp.Response;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
-import retrofit.Callback;
-import retrofit.RetrofitError;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 
 /**
  * Created by dione on 11/08/2016.
@@ -30,19 +33,20 @@ public class ForecastManager {
 
     @Subscribe
     public void onGetWeatherEvent(GetWeatherEvent getWeatherEvent) {
-        String latitude = Double.toString(getWeatherEvent.getLatitude()).trim();
-        String longitude = Double.toString(getWeatherEvent.getLongitude()).trim();
-        Callback<Weather> callback = new Callback<Weather>() {
+        IWeather iWeather = ForecastClient.mRestAdapter.create(IWeather.class);
+        Call<Weather> weatherCall = iWeather.getWeather(String.valueOf(getWeatherEvent.getLatitude()), String.valueOf(getWeatherEvent.getLongitude()));
+        weatherCall.enqueue(new Callback<Weather>() {
             @Override
-            public void success(Weather weather, retrofit.client.Response response) {
-                mBus.post(new SendWeatherEvent(weather));
+            public void onResponse(Call<Weather> call, Response<Weather> response) {
+                if (response.isSuccessful()){
+                    mBus.post(new SendWeatherEvent(response.body()));
+                }
             }
 
             @Override
-            public void failure(RetrofitError error) {
-                mBus.post(new SendWeatherEventError(error));
+            public void onFailure(Call<Weather> call, Throwable t) {
+                mBus.post(new SendWeatherEventError(t.getLocalizedMessage()));
             }
-        };
-        sForecastClient.getWeather(latitude, longitude, callback);
+        });
     }
 }
