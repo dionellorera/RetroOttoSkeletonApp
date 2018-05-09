@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.example.dione.retroottoskeletonapp.bus.BusProvider;
 import com.example.dione.retroottoskeletonapp.manager.ForecastManager;
+import com.example.dione.retroottoskeletonapp.manager.UserServices;
 import com.squareup.otto.Bus;
 
 /**
@@ -18,5 +19,6 @@ public class ForecastApplication extends Application {
         mForecastManager = new ForecastManager(this, mBus);
         mBus.register(mForecastManager);
         mBus.register(this);
+        new UserServices(this);
     }
 }

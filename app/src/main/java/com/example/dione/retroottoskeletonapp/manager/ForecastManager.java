@@ -30,23 +30,4 @@ public class ForecastManager {
         this.mBus = bus;
         sForecastClient = ForecastClient.getClient();
     }
-
-    @Subscribe
-    public void onGetWeatherEvent(GetWeatherEvent getWeatherEvent) {
-        IWeather iWeather = ForecastClient.mRestAdapter.create(IWeather.class);
-        Call<Weather> weatherCall = iWeather.getWeather(String.valueOf(getWeatherEvent.getLatitude()), String.valueOf(getWeatherEvent.getLongitude()));
-        weatherCall.enqueue(new Callback<Weather>() {
-            @Override
-            public void onResponse(Call<Weather> call, Response<Weather> response) {
-                if (response.isSuccessful()){
-                    mBus.post(new SendWeatherEvent(response.body()));
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Weather> call, Throwable t) {
-                mBus.post(new SendWeatherEventError(t.getLocalizedMessage()));
-            }
-        });
-    }
 }

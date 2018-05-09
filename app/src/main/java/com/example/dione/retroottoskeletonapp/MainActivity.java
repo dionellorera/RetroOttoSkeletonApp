@@ -35,10 +35,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Subscribe
-    public void onSendWeatherEvent(SendWeatherEvent sendWeatherEvent) {
-        Weather weather = sendWeatherEvent.getWeather();
-        Currently currently = weather.getCurrently();
-        forecastTextView.setText(currently.getSummary());
+    public void onSendWeatherEvent(Weather sendWeatherEvent) {
+        forecastTextView.setText(sendWeatherEvent.getCurrently().getSummary());
     }
 
     @Subscribe
